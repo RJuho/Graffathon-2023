@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "watch": "dev",
-    "build": "vite build --base=/graffathon-2023"
+    "build": "vite build --base=/Graffathon-2023"
   },
   "author": "",
   "repository": "https://github.com/RJuho/Graffathon-2023"
