@@ -10,7 +10,7 @@
   "description": "Demo for Graffathon 2023 party, powered by Three.js. https://www.graffathon.fi/2023/",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite",
+    "dev": "vite --host",
     "watch": "dev",
     "build": "vite build --base=/Graffathon-2023"
   },
