@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "three": "^0.155.0"
+  },
+  "devDependencies": {
+    "vite": "^4.4.7"
+  },
+  "name": "graffathon-2023",
+  "version": "1.0.0",
+  "description": "Demo for Graffathon 2023 party, powered by Three.js. https://www.graffathon.fi/2023/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "watch": "dev",
+    "build": "vite build --base=/graffathon-2023"
+  },
+  "author": "",
+  "repository": "https://github.com/RJuho/Graffathon-2023"
+}
