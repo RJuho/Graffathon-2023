@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 class StencilBLue {
-  constructor () {
+  constructor (gui = false) {
     this.clock = new THREE.Clock()
     this.scene = new THREE.Scene()
     this.object = new THREE.Group()

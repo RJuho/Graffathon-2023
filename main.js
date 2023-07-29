@@ -5,13 +5,39 @@ import Stats from 'three/addons/libs/stats.module.js'
 import { Stencil } from './scenes/stencil'
 import { StencilBLue } from './scenes/stencil-blue'
 
-let scene, renderer, stats
+let scene, scenes, renderer, stats
 
 init()
 animate()
 
 function init () {
-  scene = new Stencil()
+  scenes = [{
+    scene: new Stencil(),
+    time: 5000
+  },
+  {
+    scene: new StencilBLue(),
+    time: 4000
+  },
+  {
+    scene: new Stencil(),
+    time: 3000
+  },
+  {
+    scene: new StencilBLue(),
+    time: 2000
+  },
+  {
+    scene: new Stencil(),
+    time: 1000
+  },
+  {
+    scene: new StencilBLue(),
+    time: 500
+  },
+  {
+    scene: new Stencil()
+  }]
 
   // Stats
   stats = new Stats()
@@ -29,21 +55,23 @@ function init () {
 
   renderer.localClippingEnabled = true
 
-  setTimeout(() => {
-    scene = new StencilBLue()
+  const loop = i => {
+    scene = scenes[i].scene
+
     const controls = new OrbitControls(scene.getCamera, renderer.domElement)
     controls.minDistance = 2
     controls.maxDistance = 20
     controls.enabled = false
     controls.update()
-  }, 5000)
 
-  // Controls
-  const controls = new OrbitControls(scene.getCamera, renderer.domElement)
-  controls.minDistance = 2
-  controls.maxDistance = 20
-  controls.enabled = false
-  controls.update()
+    if (!scenes[i]?.time) return
+
+    setTimeout(() => {
+      loop(i + 1)
+    }, scenes[i].time)
+  }
+
+  loop(0)
 }
 
 function onWindowResize () {

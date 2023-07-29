@@ -1,7 +1,11 @@
 import * as THREE from 'three'
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 
 class Stencil {
   constructor () {
+    let gui = false
+    if (import.meta.env.MODE === 'development') gui = new GUI()
+
     this.clock = new THREE.Clock()
     this.scene = new THREE.Scene()
     this.object = new THREE.Group()
@@ -102,6 +106,38 @@ class Stencil {
     ground.position.y = -1
     ground.receiveShadow = true
     this.scene.add(ground)
+
+    // GUI
+    if (gui) {
+      gui.add(params, 'animate')
+
+      const planeX = gui.addFolder('planeX')
+      planeX.add(params.planeX, 'displayHelper').onChange(v => (this.planeHelpers[0].visible = v))
+      planeX.add(params.planeX, 'constant').min(-1).max(1).onChange(d => (this.planes[0].constant = d))
+      planeX.add(params.planeX, 'negated').onChange(() => {
+        this.planes[0].negate()
+        params.planeX.constant = this.planes[0].constant
+      })
+      planeX.open()
+
+      const planeY = gui.addFolder('planeY')
+      planeY.add(params.planeY, 'displayHelper').onChange(v => (this.planeHelpers[1].visible = v))
+      planeY.add(params.planeY, 'constant').min(-1).max(1).onChange(d => (this.planes[1].constant = d))
+      planeY.add(params.planeY, 'negated').onChange(() => {
+        this.planes[1].negate()
+        params.planeY.constant = this.planes[1].constant
+      })
+      planeY.open()
+
+      const planeZ = gui.addFolder('planeZ')
+      planeZ.add(params.planeZ, 'displayHelper').onChange(v => (this.planeHelpers[2].visible = v))
+      planeZ.add(params.planeZ, 'constant').min(-1).max(1).onChange(d => (this.planes[2].constant = d))
+      planeZ.add(params.planeZ, 'negated').onChange(() => {
+        this.planes[2].negate()
+        params.planeZ.constant = this.planes[2].constant
+      })
+      planeZ.open()
+    }
   }
 
   get getCamera () {
