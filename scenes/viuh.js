@@ -5,6 +5,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 class Viuh {
   constructor() {
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x000)
     this.clock = new THREE.Clock();
     this.mixer = [];
 
