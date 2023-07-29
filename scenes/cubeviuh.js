@@ -25,7 +25,7 @@ class CubeViuh {
 
     for (let i = 0; i < 5; i++) {
       const geometry = new THREE.IcosahedronGeometry(3);
-      const material = new THREE.MeshLambertMaterial({ color: 0x112233 });
+      const material = new THREE.MeshLambertMaterial({ color: 0x888888 });
       const mesh = new THREE.Mesh(geometry, material);
 
       const keyframes = new THREE.VectorKeyframeTrack(
@@ -68,8 +68,7 @@ class CubeViuh {
       this.scene.add(mesh);
     }
 
-    this.scene.add(new THREE.DirectionalLight(0xffffee, 10));
-    this.scene.add(new THREE.AmbientLight(0x404040,10));
+    this.scene.add(new THREE.HemisphereLight( 0xff0000, 0x0000ff, 20 ));
   }
 
   get getCamera() {
