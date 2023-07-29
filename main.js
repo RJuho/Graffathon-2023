@@ -17,13 +17,13 @@ init()
 
 function init () {
   scenes = [
-  {
-    scene: new Viuh(),
-    time: 5000
-  },
-  {
-    scene: new City()
-  }]
+    {
+      scene: new Viuh(),
+      time: 5000
+    },
+    {
+      scene: new City()
+    }]
 
   // Stats
   stats = new Stats()
