@@ -3,7 +3,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
 import { Stencil } from './scenes/stencil'
-import { StencilBLue } from './scenes/stencil-blue'
+import { City } from './scenes/city'
+// import { StencilBLue } from './scenes/stencil-blue'
 
 let scene, scenes, renderer, stats
 
@@ -16,27 +17,7 @@ function init () {
     time: 5000
   },
   {
-    scene: new StencilBLue(),
-    time: 4000
-  },
-  {
-    scene: new Stencil(),
-    time: 3000
-  },
-  {
-    scene: new StencilBLue(),
-    time: 2000
-  },
-  {
-    scene: new Stencil(),
-    time: 1000
-  },
-  {
-    scene: new StencilBLue(),
-    time: 500
-  },
-  {
-    scene: new Stencil()
+    scene: new City()
   }]
 
   // Stats
