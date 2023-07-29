@@ -29,17 +29,19 @@ class City {
     return mesh
   }
 
-  makeHouse (position) {
-  // lp = lightPole
+  randRange (min, max) { return Math.floor(Math.random() * (max - min + 1) + min) }
+
+  // Facing: 1 = windows at right, -1 = windows at left
+  makeHouse (position, facing) {
+    // lp = lightPole
     const outDepth = 0.01
 
     const houseWidth = 3
     const houseDepth = 3
-    const houseHeight = 6
+    const houseHeight = this.randRange(5, 12)
 
     const doorDepth = houseWidth / 5
-    const doorHeight = houseHeight / 5
-
+    const doorHeight = 1.2
     const windowWidth = houseWidth / 5
     const windowHeight = houseWidth / 5
 
@@ -53,7 +55,7 @@ class City {
     // Door
     this.createBox(
       [outDepth, doorHeight, doorDepth],
-      [position[0] - houseDepth / 2, doorHeight / 2 + position[1], position[2]],
+      [position[0] - houseDepth / 2 * facing, doorHeight / 2 + position[1], position[2]],
       0x000000
     )
 
@@ -61,7 +63,7 @@ class City {
     this.createBox(
       [outDepth, windowHeight, windowWidth],
       [
-        position[0] - houseDepth / 2,
+        position[0] - houseDepth / 2 * facing,
         (3 * windowHeight) / 2 + position[1] - 0.1,
         position[2] + (houseWidth * 1.1) / 4
       ],
@@ -70,24 +72,23 @@ class City {
     this.createBox(
       [outDepth, windowHeight, windowWidth],
       [
-        position[0] - houseDepth / 2,
+        position[0] - houseDepth / 2 * facing,
         (3 * windowHeight) / 2 + position[1] - 0.1,
         position[2] - (houseWidth * 1.1) / 4
       ],
       0x0000ff
     )
     const windowVerCount = 4
-    for (let ii = 0; ii < 3; ii++) {
+    const windowHorCount = 3
+    for (let ii = 0; ii < windowHorCount; ii++) {
       for (let jj = 0; jj < windowVerCount; jj++) {
         this.createBox(
           [outDepth, windowHeight, windowWidth],
           [
-            position[0] - houseDepth / 2,
-            (3 * windowHeight) / 2 +
-          position[1] -
-          0.1 +
-          ((houseHeight * 0.9) / (windowVerCount + 1)) * (jj + 1),
-            position[2] - ((houseWidth * 1.1) / 4) * (ii - 1)
+            position[0] - houseDepth / 2 * facing,
+            (windowHorCount * windowHeight) / 2 +
+            position[1] - 0.1 + ((houseHeight * 0.9) / (windowVerCount + 1)) * (jj + 1),
+            position[2] - ((houseWidth * 1.1) / (windowHorCount + 1)) * (ii - (windowHorCount - 1) * 0.5)
           ],
           0x0000ff
         )
@@ -96,7 +97,7 @@ class City {
   }
 
   makeLightPole (position) {
-  // lp = lightPole
+    // lp = lightPole
     const lpHeight = 2
     const lpTopLen = 0.4
     const wd = 0.1
@@ -114,8 +115,8 @@ class City {
   }
 
   makeCity () {
-  //   const light = new THREE.AmbientLight(0x40f040);
-  //   scene.add(light);
+    //   const light = new THREE.AmbientLight(0x40f040);
+    //   scene.add(light);
 
     // FLOOR
     this.createBox([params.mapWidth, params.planeWidth, params.mapLen], [0, 0, 0])
@@ -124,32 +125,35 @@ class City {
     this.createBox([params.roadWidth, 0.01, params.mapLen], [0, 0.01, 0], 0x0000f0)
 
     // Light pole count per side
-    const lpCount = 5
-    for (let ii = 0; ii < lpCount; ii++) {
+    for (let ii = 0; ii < params.lpCount; ii++) {
       this.makeLightPole([
         params.roadWidth / 2 + 0.3,
         0,
-        (params.mapLen / (lpCount - 1)) * ii - params.mapLen / 2
+        (params.mapLen / (params.lpCount - 1)) * ii - params.mapLen / 2
       ])
-    // makeLightPole([-0.8, 0, (mapLen / (lpCount - 1)) * ii - mapLen / 2]);
+      // makeLightPole([-0.8, 0, (mapLen / (lpCount - 1)) * ii - mapLen / 2]);
     }
 
     // Houses
-    const houseCount = 5
-    for (let ii = 0; ii < houseCount; ii++) {
+    for (let ii = 0; ii < params.houseCount; ii++) {
       this.makeHouse([
         params.roadWidth / 2 + 2,
         params.planeWidth / 2,
-        (params.mapLen / (houseCount - 1)) * ii - params.mapLen / 2
-      ])
+        (params.mapLen / (params.houseCount - 1)) * ii - params.mapLen / 2
+      ], 1)
+      this.makeHouse([
+        -params.roadWidth / 2 - 2,
+        params.planeWidth / 2,
+        (params.mapLen / (params.houseCount - 1)) * ii - params.mapLen / 2
+      ], -1)
     }
   }
 
   constructor (gui = false) {
-    const cameraPos = [0, 5, 20]
+    // const cameraPos = [0, 5, 20]
     // const cameraPos = [-6, 0, 12.5]
-    const cameraLookat = [0, -Math.PI / 2, 0]
-    // const cameraLookat = [0, 0, 0];
+    // const cameraLookat = [0, -Math.PI / 2, 0]
+    // const cameraLookat = [0, 0, 0]
 
     this.scene = new THREE.Scene()
 
@@ -167,34 +171,14 @@ class City {
     // Set size (whole window)
     this.renderer.setSize(window.innerWidth, window.innerHeight)
 
-    // Render to canvas element
-    // document.body.appendChild(this.renderer.domElement)
-
-    // const texture = new THREE.TextureLoader().load('textures/crate.gif');
-
-    // Create material with texture
-    // const material = new THREE.MeshBasicMaterial({ map: texture });
-
-    // Create mesh with geo and material
-    // Add to scene
-
-    //   let len = 100;
-    //   for (let ii = Math.floor(len / 2) - len; ii < Math.ceil(len / 2); ii++) {
-    //     let div = 10;
-    //     let dimensions = [1 / div, 1 / div, 1 / div];
-    //     let position = [(ii * 2 + 1) / div, 0, 0];
-    //     cubes.push(createBox(dimensions, position));
-    //   }
-
-    // Position camera
     this.makeCity()
-    this.camera.position.x = cameraPos[0]
-    this.camera.position.y = cameraPos[1]
-    this.camera.position.z = cameraPos[2]
+    this.camera.position.x = params.cameraPos[0]
+    this.camera.position.y = params.cameraPos[1]
+    this.camera.position.z = params.cameraPos[2]
 
-    this.camera.rotation.x = cameraLookat[0]
-    this.camera.rotation.y = cameraLookat[1]
-    this.camera.rotation.z = cameraLookat[2]
+    this.camera.rotation.x = params.cameraLookat[0]
+    this.camera.rotation.y = params.cameraLookat[1]
+    this.camera.rotation.z = params.cameraLookat[2]
 
     document.body.addEventListener('keydown', (event) => {
       console.log(event.key)
@@ -246,22 +230,44 @@ class City {
   }
 
   animate () {
-    this.camera.position.x += params.camSpeedModifier[0] * params.camSpeed
-    this.camera.position.z += params.camSpeedModifier[1] * params.camSpeed
-    this.camera.position.y += params.camSpeedModifier[2] * params.camSpeed
+    if (params.initV2) {
+      params.initV2 = false
+      this.camera.rotation.x = params.cameraLookat[0]
+      this.camera.rotation.y = params.cameraLookat[1]
+      this.camera.rotation.z = params.cameraLookat[2]
+
+      this.camera.position.x = params.cameraPos[0]
+      this.camera.position.y = params.cameraPos[1]
+      this.camera.position.z = params.cameraPos[2]
+    }
+    if (params.controls) {
+      this.camera.position.x += params.camSpeedModifier[0] * params.camSpeed
+      this.camera.position.z += params.camSpeedModifier[1] * params.camSpeed
+      this.camera.position.y += params.camSpeedModifier[2] * params.camSpeed
+    } else {
+      this.camera.position.z -= params.camSpeed
+      params.camSpeed *= 1.01
+    }
+    // this.camera.rotation.y += 0.01
   }
 }
 
 export { City }
 
 const params = {
-  cameraPos: [0, 5, 20],
-  cameraLookat: [0, -Math.PI / 2, 0],
+  controls: false,
+  initV2: true,
+  cameraPos: [0, 1, 250],
+  // cameraLookat: [0, Math.PI / 2, 0],
+  cameraLookat: [0, 0, 0],
   camSpeed: 0.1,
   camSpeedModifier: [0, 0, 0],
 
   roadWidth: 2,
-  mapLen: 25,
+  mapLen: 500,
   mapWidth: 10,
-  planeWidth: 0.01
+  planeWidth: 0.01,
+
+  houseCount: 100,
+  lpCount: 40
 }
