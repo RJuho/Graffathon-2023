@@ -24,7 +24,7 @@ class CubeViuh {
     this.scene.add(this.cameraBoom);
 
     for (let i = 0; i < 5; i++) {
-      const geometry = new THREE.BoxGeometry(3, 1, 2);
+      const geometry = new THREE.IcosahedronGeometry(3);
       const material = new THREE.MeshLambertMaterial({ color: 0x112233 });
       const mesh = new THREE.Mesh(geometry, material);
 
