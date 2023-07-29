@@ -148,7 +148,7 @@ function makeCity (params, scene) {
   scene.add(light)
 
   // FLOOR
-  createBox([params.mapWidth, params.planeWidth, params.mapLen], [0, 0, 0], params, scene)
+  createBox([params.mapWidth, params.planeWidth, params.mapLen], [0, 0, 0], params, scene, 0xff0000)
 
   // ROAD
   createBox([params.roadWidth, 0.01, params.mapLen], [0, 0.01, 0], params, scene, 0x0000f0)

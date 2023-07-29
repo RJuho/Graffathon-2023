@@ -10,6 +10,10 @@ class CityAtStreetLevel {
     return this.scene
   }
 
+  get getEffectShaders () {
+    return []
+  }
+
   constructor (gui = false) {
     // const cameraPos = [0, 5, 20]
     // const cameraPos = [-6, 0, 12.5]

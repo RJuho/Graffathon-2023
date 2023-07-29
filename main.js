@@ -23,21 +23,18 @@ let scene, scenes, renderer, stats, composer
 init()
 
 function init () {
-  scenes = [{
-    scene: new Stencil(),
-    time: 50
-  },
-  {
-    scene: new Viuh(),
-    time: 50
-  },
-  {
-    scene: new CityAtStreetLevel(),
-    time: 10000
-  },
-  {
-    scene: new CityFromWindow()
-  }]
+  scenes = [
+    {
+      scene: new Viuh(),
+      time: 50
+    },
+    {
+      scene: new CityAtStreetLevel(),
+      time: 10000
+    },
+    {
+      scene: new CityFromWindow()
+    }]
 
   // Stats
   stats = new Stats()

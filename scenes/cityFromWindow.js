@@ -10,6 +10,10 @@ class CityFromWindow {
     return this.scene
   }
 
+  get getEffectShaders () {
+    return []
+  }
+
   constructor (gui = false) {
     // const cameraPos = [0, 5, 20]
     // const cameraPos = [-6, 0, 12.5]
@@ -44,7 +48,7 @@ class CityFromWindow {
     const r = 0.3
     this.balls = Array(params.ballCount)
     for (let ii = 0; ii < params.ballCount; ii++) {
-      this.balls[ii] = createBall(r, [0, r, 0], params, this.scene)
+      this.balls[ii] = createBall(r, [0, r, 0], params, this.scene, 0xff0000)
     }
 
     this.camera.position.x = params.cameraPos[0]
