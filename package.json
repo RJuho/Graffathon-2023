@@ -3,6 +3,8 @@
     "three": "^0.155.0"
   },
   "devDependencies": {
+    "snazzy": "^9.0.0",
+    "standard": "^17.1.0",
     "vite": "^4.4.7"
   },
   "name": "graffathon-2023",
@@ -12,7 +14,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite --host",
     "watch": "dev",
-    "build": "vite build --base=/Graffathon-2023"
+    "build": "vite build --base=/Graffathon-2023",
+    "standard": "standard --fix | snazzy",
+    "lint": "npm run standard"
   },
   "author": "",
   "repository": "https://github.com/RJuho/Graffathon-2023"
