@@ -9,6 +9,7 @@ import Stats from 'three/addons/libs/stats.module.js'
 
 import { Stencil } from './scenes/stencil'
 import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
+import { CityFromWindow } from './scenes/cityFromWindow'
 import { CubeViuh } from './scenes/cubeviuh'
 // import { StencilBLue } from './scenes/stencil-blue'
 
@@ -20,14 +21,18 @@ animate()
 function init () {
   scenes = [{
     scene: new Stencil(),
-    time: 50
+    time: 5000
   },
   {
     scene: new CubeViuh(),
-    time: 50
+    time: 5000
   },
   {
-    scene: new CityAtStreetLevel()
+    scene: new CityAtStreetLevel(),
+    time: 10000
+  },
+  {
+    scene: new CityFromWindow()
   }]
 
   // Stats

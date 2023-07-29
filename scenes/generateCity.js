@@ -22,13 +22,31 @@ function createBox (dimensions, position, params, scene, color = 0x00ff00) {
   return mesh
 }
 
+function createBall (radius, position, params, scene, color = 0x00ff00) {
+  const material = new THREE.MeshLambertMaterial({
+    color
+    // side: THREE.BackSide
+  })
+  const boxGeometry = new THREE.SphereGeometry(
+    radius
+  )
+  const mesh = new THREE.Mesh(boxGeometry, material)
+
+  scene.add(mesh)
+  mesh.position.x = position[0]
+  mesh.position.y = position[1]
+  mesh.position.z = position[2]
+
+  return mesh
+}
+
 function makeHouse (position, facing, params, scene) {
   // lp = lightPole
   const outDepth = 0.01
 
   const houseWidth = 3
   const houseDepth = 3
-  const houseHeight = randRange(5, 12)
+  const houseHeight = randRange(params.houseHeight[0], params.houseHeight[1])
 
   const doorDepth = houseWidth / 5
   const doorHeight = 1.2
@@ -162,4 +180,4 @@ function makeCity (params, scene) {
 
 function generateCity (params, scene) { makeCity(params, scene) }
 
-export { generateCity }
+export { generateCity, createBall }

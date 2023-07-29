@@ -136,6 +136,7 @@ const params = {
   camRotSpeed: 0.018,
   camSpeedModifier: [0, 0, 0],
 
+  houseHeight: [5, 10],
   roadWidth: 3,
   mapLen: 500,
   mapWidth: 10,
