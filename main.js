@@ -8,7 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
 import { Stencil } from './scenes/stencil'
-import { City } from './scenes/city'
+import { City } from './scenes/cityAtStreetLevel'
 import { CubeViuh } from './scenes/cubeviuh'
 // import { StencilBLue } from './scenes/stencil-blue'
 
