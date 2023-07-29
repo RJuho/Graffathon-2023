@@ -7,16 +7,14 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
-import { Stencil } from './scenes/stencil'
 import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CityFromWindow } from './scenes/cityFromWindow'
-// import { StencilBLue } from './scenes/stencil-blue'
 import song from './assets/music/smoke-143172-cut.mp3'
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
-// import { Credits } from './scenes/credits'
+import { Credits } from './scenes/credits'
 import { Viuh } from './scenes/viuh'
 let scene, scenes, renderer, stats, composer
 
@@ -26,15 +24,22 @@ function init () {
   scenes = [
     {
       scene: new Viuh(),
-      time: 50
+      time: 5000
     },
     {
       scene: new CityAtStreetLevel(),
       time: 10000
     },
     {
-      scene: new CityFromWindow()
-    }]
+      scene: new CityFromWindow(),
+      time: 10000,
+    },
+    {
+      scene: new Credits(),
+      time: 10000
+    }
+
+]
 
   // Stats
   stats = new Stats()
