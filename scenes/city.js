@@ -10,9 +10,9 @@ class City {
   }
 
   createBox (dimensions, position, color = 0x00ff00) {
-    const material = new THREE.MeshBasicMaterial({
-      color,
-      side: THREE.BackSide
+    const material = new THREE.MeshLambertMaterial({
+      color
+      // side: THREE.BackSide
     })
     const boxGeometry = new THREE.BoxGeometry(
       dimensions[0],
@@ -96,6 +96,26 @@ class City {
     }
   }
 
+  createLight (position) {
+    const spotLight = new THREE.SpotLight(0xff00ff)
+    spotLight.position.x = position[0]
+    spotLight.position.y = position[1]
+    spotLight.position.z = position[2]
+
+    spotLight.intensity = 100
+
+    spotLight.target.position.set(position[0], position[1] - 2, position[2])
+
+    // spotLight.castShadow = true
+
+    // spotLight.shadow.camera.near = 5
+    // spotLight.shadow.camera.far = 400
+    // spotLight.shadow.camera.fov = 30
+
+    this.scene.add(spotLight)
+    this.scene.add(spotLight.target)
+  }
+
   makeLightPole (position) {
     // lp = lightPole
     const lpHeight = 2
@@ -112,11 +132,12 @@ class City {
       [wd / 2 - lpTopLen / 2 + position[0], lpHeight + position[1], position[2]],
       0x0000ff
     )
+    this.createLight([wd / 2 - lpTopLen + position[0], lpHeight + position[1] - 0.1, position[2]])
   }
 
   makeCity () {
-    //   const light = new THREE.AmbientLight(0x40f040);
-    //   scene.add(light);
+    const light = new THREE.AmbientLight(0x40f040)
+    this.scene.add(light)
 
     // FLOOR
     this.createBox([params.mapWidth, params.planeWidth, params.mapLen], [0, 0, 0])
@@ -156,6 +177,7 @@ class City {
     // const cameraLookat = [0, 0, 0]
 
     this.scene = new THREE.Scene()
+    this.clock = new THREE.Clock()
 
     // Init camera (PerspectiveCamera)
     this.camera = new THREE.PerspectiveCamera(
@@ -164,6 +186,11 @@ class City {
       0.1,
       1000
     )
+
+    // this.light = new THREE.DirectionalLight(0xffffff, 3)
+    // this.light.position.set(0, 5, 0)
+    // this.createBox([0.1, 0.1, 0.1], [0, 4, 0])
+    // this.scene.add(this.light)
 
     // Init renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -240,13 +267,16 @@ class City {
       this.camera.position.y = params.cameraPos[1]
       this.camera.position.z = params.cameraPos[2]
     }
+    // console.log(this.clock.getElapsedTime())
     if (params.controls) {
       this.camera.position.x += params.camSpeedModifier[0] * params.camSpeed
       this.camera.position.z += params.camSpeedModifier[1] * params.camSpeed
       this.camera.position.y += params.camSpeedModifier[2] * params.camSpeed
     } else {
-      this.camera.position.z -= params.camSpeed
-      params.camSpeed *= 1.01
+      const curTime = this.clock.getElapsedTime()
+      this.camera.position.z = -curTime * 4
+      this.camera.position.x = Math.sin(curTime)
+      this.camera.position.y = Math.cos(curTime) + 1.1
     }
     // this.camera.rotation.y += 0.01
   }
@@ -261,6 +291,7 @@ const params = {
   // cameraLookat: [0, Math.PI / 2, 0],
   cameraLookat: [0, 0, 0],
   camSpeed: 0.1,
+  camRotSpeed: 0.018,
   camSpeedModifier: [0, 0, 0],
 
   roadWidth: 2,
@@ -269,5 +300,5 @@ const params = {
   planeWidth: 0.01,
 
   houseCount: 100,
-  lpCount: 40
+  lpCount: 20
 }
