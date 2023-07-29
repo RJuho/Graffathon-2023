@@ -1,3 +1,8 @@
+// IMPORTANT
+// HIDE CURSOR AFTER START
+// ADD SOUND
+// AUTOMATICALLY GO TO FULL SCREEN
+
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
@@ -15,11 +20,11 @@ animate()
 function init () {
   scenes = [{
     scene: new Stencil(),
-    time: 5000
+    time: 50
   },
   {
     scene: new CubeViuh(),
-    time: 5000
+    time: 50
   },
   {
     scene: new City()
