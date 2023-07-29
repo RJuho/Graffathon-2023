@@ -1,73 +1,99 @@
-import * as THREE from 'three'
-import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import * as THREE from "three";
+import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 class CubeViuh {
-  constructor () {
-    this.scene = new THREE.Scene()
+  constructor() {
+    this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
+    this.mixer = [];
 
-    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 100)
-    this.camera.position.set(0, 0, -50)
+    this.camera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      1,
+      100
+    );
+    this.camera.position.set(0, 0, -50);
 
     // Add camera to a "boom" so we can spin camera around the cube.
     this.cameraBoom = new THREE.Group();
-    this.cameraBoom.position.set(0,0,0)
-    // this.cameraBoom.rotation.set()
+    this.cameraBoom.position.set(0, 0, 0);
     this.cameraBoom.add(this.camera);
 
     this.scene.add(this.cameraBoom);
 
+    for (let i = 0; i < 5; i++) {
+      const geometry = new THREE.BoxGeometry(3, 1, 2);
+      const material = new THREE.MeshLambertMaterial({ color: 0x112233 });
+      const mesh = new THREE.Mesh(geometry, material);
 
-    const geometry = new THREE.BoxGeometry( 3, 1, 2 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x112233 } );
-    const mesh = new THREE.Mesh( geometry, material );
+      const keyframes = new THREE.VectorKeyframeTrack(
+        ".position",
+        [i+0, i+1, i+2, i+3, i+4, i+5, i+6],
+        [10, 0, 10, 3, 10, 0, 3, 0, 0, -3, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3]
+      );
 
-    const keyframes = new THREE.VectorKeyframeTrack( '.position', [0, 1, 2 ,3,4,5,6], [
-      10, 0, 10,
-      3, 10, 0,
-      3, 0, 0,
-     -3, 0, 0,
-      0, 0, 0,
-      0, 3, 3,
-      3, 3, 3
-    ] );
+      const xAxis = new THREE.Vector3(1, 1, 2);
+      const spinStart = new THREE.Quaternion().setFromAxisAngle(xAxis, 0);
+      const spinEnd = new THREE.Quaternion().setFromAxisAngle(xAxis, 3);
+      const spinKeyframes = new THREE.QuaternionKeyframeTrack(
+        ".quaternion",
+        [0, 1, 2],
+        [
+          spinStart.x,
+          spinStart.y,
+          spinStart.z,
+          spinStart.w,
+          spinEnd.x,
+          spinEnd.y,
+          spinEnd.z,
+          spinEnd.w,
+          spinStart.x,
+          spinStart.y,
+          spinStart.z,
+          spinStart.w,
+        ]
+      );
 
-    const xAxis = new THREE.Vector3( 1, 1, 2 );
-    const spinStart = new THREE.Quaternion().setFromAxisAngle( xAxis, 0 );
-    const spinEnd = new THREE.Quaternion().setFromAxisAngle( xAxis, 3);
-    const spinKeyframes = new THREE.QuaternionKeyframeTrack( '.quaternion', [ 0, 1, 2 ], [ spinStart.x, spinStart.y, spinStart.z, spinStart.w, spinEnd.x, spinEnd.y, spinEnd.z, spinEnd.w, spinStart.x, spinStart.y, spinStart.z, spinStart.w ] );
+      const mixer = new THREE.AnimationMixer(mesh);
+      const clip = new THREE.AnimationClip("Animation", 20+(i*2), [
+        keyframes,
+        spinKeyframes,
+      ]);
+      const clipAction = mixer.clipAction(clip);
+      clipAction.play();
+      this.mixer.push(mixer)
 
-    this.mixer = new THREE.AnimationMixer( mesh );
-    const clip = new THREE.AnimationClip( 'Animation', 20, [ keyframes, spinKeyframes ] );
-    const clipAction = this.mixer.clipAction( clip );
-    clipAction.play();
+      this.scene.add(mesh);
+    }
 
-    this.scene.add(mesh);
-
-    this.scene.add(new THREE.DirectionalLight(0xffffff, 1.5))
+    this.scene.add(new THREE.DirectionalLight(0xffffee, 10));
+    this.scene.add(new THREE.AmbientLight(0x404040,10));
   }
 
-  get getCamera () {
-    return this.camera
+  get getCamera() {
+    return this.camera;
   }
 
-  get getScene () {
-    return this.scene
+  get getScene() {
+    return this.scene;
   }
 
   get getEffectShaders() {
-    return [new ShaderPass(RGBShiftShader)]
+    return [new ShaderPass(RGBShiftShader)];
   }
 
-
-  animate () {
+  animate() {
     const delta = this.clock.getDelta();
 
-    this.mixer.update( delta );
+    for (const m of this.mixer) {
+      m.update(delta);
+    }
 
-    this.cameraBoom.rotation.x += 0.03;
+
+    this.cameraBoom.rotation.x += 0.05;
   }
 }
 
-export { CubeViuh }
+export { CubeViuh };
