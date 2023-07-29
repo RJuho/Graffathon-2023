@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { generateCity } from './generateCity'
 
-class City {
+class CityAtStreetLevel {
   get getCamera () {
     return this.camera
   }
@@ -123,7 +123,7 @@ class City {
   }
 }
 
-export { City }
+export { CityAtStreetLevel }
 
 const params = {
   controls: false,

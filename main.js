@@ -8,7 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
 import { Stencil } from './scenes/stencil'
-import { City } from './scenes/cityAtStreetLevel'
+import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CubeViuh } from './scenes/cubeviuh'
 // import { StencilBLue } from './scenes/stencil-blue'
 
@@ -27,7 +27,7 @@ function init () {
     time: 50
   },
   {
-    scene: new City()
+    scene: new CityAtStreetLevel()
   }]
 
   // Stats
