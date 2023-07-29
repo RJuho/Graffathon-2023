@@ -19,7 +19,7 @@ function init () {
   },
   {
     scene: new CubeViuh(),
-    time: 5000,
+    time: 5000
   },
   {
     scene: new City()
