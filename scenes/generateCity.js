@@ -180,4 +180,4 @@ function makeCity (params, scene) {
 
 function generateCity (params, scene) { makeCity(params, scene) }
 
-export { generateCity, createBall }
+export { generateCity, createBall, createBox }

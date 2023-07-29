@@ -7,6 +7,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
+
+import { Explosion } from './scenes/explosion'
 import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CityFromWindow } from './scenes/cityFromWindow'
 import song from './assets/music/smoke-143172-cut.mp3'
@@ -28,9 +30,10 @@ function init () {
     },
     {
       scene: new CityAtStreetLevel(),
-      time: 10000
+      time: 10
     },
     {
+
       scene: new CityFromWindow(),
       time: 10000,
     },
