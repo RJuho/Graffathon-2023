@@ -28,7 +28,7 @@ class CubeViuh {
     const spinKeyframes = new THREE.QuaternionKeyframeTrack( '.quaternion', [ 0, 1, 2 ], [ spinStart.x, spinStart.y, spinStart.z, spinStart.w, spinEnd.x, spinEnd.y, spinEnd.z, spinEnd.w, spinStart.x, spinStart.y, spinStart.z, spinStart.w ] );
 
     this.mixer = new THREE.AnimationMixer( mesh );
-    const clip = new THREE.AnimationClip( 'Action', 20, [ keyframes, spinKeyframes ] );
+    const clip = new THREE.AnimationClip( 'Animation', 20, [ keyframes, spinKeyframes ] );
     const clipAction = this.mixer.clipAction( clip );
     clipAction.play();
 

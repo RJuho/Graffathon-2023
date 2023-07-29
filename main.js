@@ -4,6 +4,7 @@ import Stats from 'three/addons/libs/stats.module.js'
 
 import { Stencil } from './scenes/stencil'
 import { City } from './scenes/city'
+import { CubeViuh } from './scenes/cubeviuh'
 // import { StencilBLue } from './scenes/stencil-blue'
 
 let scene, scenes, renderer, stats
@@ -15,6 +16,10 @@ function init () {
   scenes = [{
     scene: new Stencil(),
     time: 5000
+  },
+  {
+    scene: new CubeViuh(),
+    time: 5000,
   },
   {
     scene: new City()
