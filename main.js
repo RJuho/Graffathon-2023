@@ -13,10 +13,7 @@ init()
 animate()
 
 function init () {
-  scenes = [{
-    scene: new Stencil(),
-    time: 5000
-  },
+  scenes = [
   {
     scene: new CubeViuh(),
     time: 5000
