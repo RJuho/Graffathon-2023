@@ -4,7 +4,7 @@ import Stats from 'three/addons/libs/stats.module.js'
 
 import { Stencil } from './scenes/stencil'
 import { City } from './scenes/city'
-import { CubeViuh } from './scenes/cubeviuh'
+import { Viuh } from './scenes/viuh'
 
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -19,7 +19,7 @@ animate()
 function init () {
   scenes = [
   {
-    scene: new CubeViuh(),
+    scene: new Viuh(),
     time: 5000
   },
   {

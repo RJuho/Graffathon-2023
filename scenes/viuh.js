@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
-class CubeViuh {
+class Viuh {
   constructor() {
     this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
@@ -95,4 +95,4 @@ class CubeViuh {
   }
 }
 
-export { CubeViuh };
+export { Viuh };
