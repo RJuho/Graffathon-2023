@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
 import { City } from './scenes/city'
-import { CubeViuh } from './scenes/cubeviuh'
+import { Viuh } from './scenes/viuh'
 
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
@@ -17,13 +17,13 @@ init()
 
 function init () {
   scenes = [
-    {
-      scene: new CubeViuh(),
-      time: 5000
-    },
-    {
-      scene: new City()
-    }]
+  {
+    scene: new Viuh(),
+    time: 5000
+  },
+  {
+    scene: new City()
+  }]
 
   // Stats
   stats = new Stats()
