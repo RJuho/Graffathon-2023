@@ -12,11 +12,17 @@ import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CityFromWindow } from './scenes/cityFromWindow'
 import { CubeViuh } from './scenes/cubeviuh'
 // import { StencilBLue } from './scenes/stencil-blue'
-
-let scene, scenes, renderer, stats
+import song from './assets/music/smoke-143172-cut.mp3'
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
+// import { Credits } from './scenes/credits'
+// import { Viuh } from './scenes/viuh'
+// import { City } from './scenes/city'
+let scene, scenes, renderer, stats, composer
 
 init()
-animate()
 
 function init () {
   scenes = [{
@@ -37,19 +43,8 @@ function init () {
 
   // Stats
   stats = new Stats()
-  document.body.appendChild(stats.dom)
 
-  // Renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.shadowMap.enabled = true
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setClearColor(0x263238)
-
-  window.addEventListener('resize', onWindowResize)
-  document.body.appendChild(renderer.domElement)
-
-  renderer.localClippingEnabled = true
+  const music = new window.Audio(song)
 
   const loop = i => {
     scene = scenes[i].scene
@@ -60,6 +55,15 @@ function init () {
     controls.enabled = false
     controls.update()
 
+    composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scenes[i].scene.getScene, scenes[i].scene.getCamera))
+    scenes[i].scene.getEffectShaders.forEach(shaderPass => {
+      composer.addPass(shaderPass)
+    })
+
+    const outputPass = new OutputPass()
+    composer.addPass(outputPass)
+
     if (!scenes[i]?.time) return
 
     setTimeout(() => {
@@ -67,7 +71,74 @@ function init () {
     }, scenes[i].time)
   }
 
-  loop(0)
+  const welcomeGUI = new GUI()
+  welcomeGUI.hide()
+
+  const settings = {
+    fullScreen: true,
+    music: true,
+    stats: true,
+    antialias: false,
+    checkShaderErrors: false,
+    pixelRatio: Number((window.devicePixelRatio * 0.70).toFixed(1)),
+    start: () => {
+      welcomeGUI.hide()
+      document.body.style.cursor = 'none'
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: settings.antialias })
+      renderer.debug = { checkShaderErrors: settings.checkShaderErrors }
+      renderer.shadowMap.enabled = true
+      renderer.setPixelRatio(window.devicePixelRatio)
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.setClearColor(0x263238)
+
+      window.addEventListener('resize', onWindowResize)
+      document.body.appendChild(renderer.domElement)
+
+      renderer.localClippingEnabled = true
+
+      // Show or hide stats
+      if (settings.stats) document.body.appendChild(stats.dom)
+
+      renderer.setPixelRatio(settings.pixelRatio)
+
+      if (settings.fullScreen) {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen()
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen()
+        }
+      }
+
+      if (settings.music) {
+        music.play()
+        music.addEventListener('playing', () => {
+          loop(0)
+          animate()
+        })
+        return
+      }
+
+      loop(0)
+      animate()
+    }
+  }
+
+  welcomeGUI.add(settings, 'antialias')
+  welcomeGUI.add(settings, 'fullScreen')
+  welcomeGUI.add(settings, 'music')
+  welcomeGUI.add(settings, 'stats')
+  welcomeGUI.add(settings, 'checkShaderErrors')
+  welcomeGUI.add(settings, 'pixelRatio', 0.1, window.devicePixelRatio, 0.1)
+  welcomeGUI.add(settings, 'start')
+
+  music.addEventListener('canplaythrough', () => {
+    welcomeGUI.show()
+  })
+  music.addEventListener('ended', () => {
+    welcomeGUI.show()
+  })
 }
 
 function onWindowResize () {
@@ -83,6 +154,6 @@ function animate () {
   scene.animate()
 
   stats.begin()
-  renderer.render(scene.getScene, scene.getCamera)
+  composer.render(scene.getScene, scene.getCamera)
   stats.end()
 }
