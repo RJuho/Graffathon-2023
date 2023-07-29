@@ -1,4 +1,8 @@
 import * as THREE from 'three'
+import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+
+
 
 class City {
   get getCamera () {
@@ -7,6 +11,10 @@ class City {
 
   get getScene () {
     return this.scene
+  }
+
+  get getEffectShaders() {
+    return [/* new ShaderPass(RGBShiftShader) */]
   }
 
   createBox (dimensions, position, color = 0x00ff00) {

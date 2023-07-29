@@ -5,9 +5,13 @@ import Stats from 'three/addons/libs/stats.module.js'
 import { Stencil } from './scenes/stencil'
 import { City } from './scenes/city'
 import { CubeViuh } from './scenes/cubeviuh'
-// import { StencilBLue } from './scenes/stencil-blue'
 
-let scene, scenes, renderer, stats
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+
+let scene, scenes, renderer, stats, composer;
 
 init()
 animate()
@@ -47,6 +51,16 @@ function init () {
     controls.enabled = false
     controls.update()
 
+    composer = new EffectComposer( renderer );
+    composer.addPass( new RenderPass( scenes[i].scene.getScene, scenes[i].scene.getCamera ));
+    scenes[i].scene.getEffectShaders.forEach(shaderPass => {
+        composer.addPass(shaderPass);
+    })
+
+    const outputPass = new OutputPass();
+    composer.addPass(outputPass);
+
+
     if (!scenes[i]?.time) return
 
     setTimeout(() => {
@@ -54,6 +68,9 @@ function init () {
     }, scenes[i].time)
   }
 
+
+  // Improve performance?
+  renderer.setPixelRatio( window.devicePixelRatio * 0.15 );
   loop(0)
 }
 
@@ -70,6 +87,6 @@ function animate () {
   scene.animate()
 
   stats.begin()
-  renderer.render(scene.getScene, scene.getCamera)
+  composer.render(scene.getScene, scene.getCamera)
   stats.end()
 }
