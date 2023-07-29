@@ -11,6 +11,8 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
 
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 
+import song from './assets/music/smoke-143172-cut.mp3'
+
 let scene, scenes, renderer, stats, composer
 
 init()
@@ -28,7 +30,7 @@ function init () {
   // Stats
   stats = new Stats()
 
-  const music = new window.Audio('assets/music/smoke-143172-cut.mp3')
+  const music = new window.Audio(song)
 
   const loop = i => {
     scene = scenes[i].scene
