@@ -4,6 +4,7 @@ import Stats from 'three/addons/libs/stats.module.js'
 
 import { City } from './scenes/city'
 import { Viuh } from './scenes/viuh'
+import { Credits } from './scenes/credits'
 
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
@@ -24,8 +25,14 @@ function init () {
       time: 5000
     },
     {
-      scene: new City()
-    }]
+      scene: new City(),
+      time: 10000,
+    },
+    {
+      scene: new Credits(),
+      time: 3000,
+    }
+]
 
   // Stats
   stats = new Stats()

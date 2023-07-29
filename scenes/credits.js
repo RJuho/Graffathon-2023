@@ -15,12 +15,12 @@ class Credits {
       1,
       100
     );
-    this.camera.position.set(-5, -50, -50);
+    this.camera.position.set(-13, -3, 10);
 
     const loader = new FontLoader();
 
     const font = loader.parse(fontJson);
-    const geometry = new TextGeometry("code: mz", {
+    const geometry = new TextGeometry("code: mz\ncode: rjuho\ncode: ileska", {
       font: font,
       size: 3,
       height: 2,
@@ -31,7 +31,7 @@ class Credits {
 
     this.scene.add(mesh);
 
-    this.scene.add(new THREE.HemisphereLight(0xff0000, 0x0000ff, 20));
+    this.scene.add(new THREE.HemisphereLight(0xbbbbbb, 0x777777, 20));
   }
 
   get getCamera() {
