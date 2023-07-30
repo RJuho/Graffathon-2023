@@ -19,6 +19,7 @@ import { Credits } from './scenes/credits'
 import { Viuh } from './scenes/viuh'
 
 let scene, scenes, renderer, stats, composer, current, timeout
+import { CubeRubber } from './scenes/CubeRubber'
 
 init()
 
@@ -52,7 +53,7 @@ function init () {
   scenes = [
     {
       scene: new Viuh(),
-      time: 5000
+      time: 6000
     },
     {
       scene: new CityAtStreetLevel(),
@@ -62,6 +63,10 @@ function init () {
 
       scene: new CityFromWindow(),
       time: 8000
+    },
+    {
+      scene: new CubeRubber(),
+      time: 5000,
     },
     {
       scene: new Explosion(),
