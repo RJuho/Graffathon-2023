@@ -7,7 +7,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
-
 import { Explosion } from './scenes/explosion'
 import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CityFromWindow } from './scenes/cityFromWindow'
@@ -35,18 +34,18 @@ function init () {
     {
 
       scene: new CityFromWindow(),
-      time: 10000,
+      time: 10000
     },
     {
       scene: new Explosion(),
-      time: 10000,
+      time: 10000
     },
     {
       scene: new Credits(),
       time: 10000
     }
 
-]
+  ]
 
   // Stats
   stats = new Stats()
@@ -82,15 +81,15 @@ function init () {
   welcomeGUI.hide()
 
   const settings = {
-    fullScreen: true,
-    music: true,
-    stats: true,
-    antialias: false,
-    checkShaderErrors: false,
-    pixelRatio: Number((window.devicePixelRatio * 0.70).toFixed(1)),
+    fullScreen: import.meta.env.MODE === 'production',
+    music: import.meta.env.MODE === 'production',
+    stats: import.meta.env.MODE === 'development',
+    antialias: import.meta.env.MODE === 'production',
+    checkShaderErrors: import.meta.env.MODE === 'development',
+    pixelRatio: import.meta.env.MODE === 'production' ? window.devicePixelRatio : Number((window.devicePixelRatio * 0.70).toFixed(1)),
     start: () => {
       welcomeGUI.hide()
-      document.body.style.cursor = 'none'
+      if (import.meta.env.MODE === 'production') document.body.style.cursor = 'none'
 
       // Renderer
       renderer = new THREE.WebGLRenderer({ antialias: settings.antialias })
