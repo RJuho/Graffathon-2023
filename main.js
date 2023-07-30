@@ -17,9 +17,10 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { Credits } from './scenes/credits'
 import { Viuh } from './scenes/viuh'
+import { CubeRubber } from './scenes/CubeRubber'
+import { SnakeBirth } from './scenes/SnakeBirth'
 
 let scene, scenes, renderer, stats, composer, current, timeout
-import { CubeRubber } from './scenes/CubeRubber'
 
 init()
 
@@ -52,32 +53,34 @@ const loop = i => {
 function init () {
   scenes = [
     {
+      scene: new SnakeBirth(),
+      time: 5000
+    },
+    {
       scene: new Viuh(),
       time: 6000
     },
     {
       scene: new CityAtStreetLevel(),
-      time: 10000
+      time: 7500
     },
     {
 
       scene: new CityFromWindow(),
-      time: 8000
+      time: 9700
     },
     {
       scene: new CubeRubber(),
-      time: 6500,
+      time: 7500
     },
     {
       scene: new Explosion(),
       time: 10000
     },
     {
-      scene: new Credits(),
-      time: 10000,
+      scene: new Credits()
     }
   ]
-
 
   // Stats
   stats = new Stats()
@@ -151,6 +154,9 @@ function init () {
   })
   music.addEventListener('ended', () => {
     welcomeGUI.show()
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    }
   })
 }
 

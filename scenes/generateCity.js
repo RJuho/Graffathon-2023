@@ -105,7 +105,7 @@ function makeHouse (position, facing, params, scene) {
 }
 
 function createLight (position, params, scene) {
-  const spotLight = new THREE.SpotLight(0xff00ff)
+  const spotLight = new THREE.SpotLight(0xffffff)
   spotLight.position.x = position[0]
   spotLight.position.y = position[1]
   spotLight.position.z = position[2]
