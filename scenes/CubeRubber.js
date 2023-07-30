@@ -6,6 +6,19 @@ class CubeRubber {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x000);
     this.clock = new THREE.Clock();
+    this.balls = []
+
+    // for (let i = 0; i < 5; i++) {
+    //   const ball = createBall(2, [150+(i*3.5),-150,5],null, this.scene, 0xccc)
+    //   this.scene.add(ball)
+    //   this.balls.push(ball)
+    // }
+
+    for (let i = 0; i < 5; i++) {
+      const ball = createBall(2, [150+(i*3.5),-150,15],null, this.scene, 0xccc)
+      this.scene.add(ball)
+      this.balls.push(ball)
+    }
 
     this.camera = new THREE.PerspectiveCamera(
       70,
@@ -56,7 +69,12 @@ class CubeRubber {
   }
 
   animate() {
+    const curTime = Date.now() / 1000
     this.material.uniforms["time"].value = this.clock.getElapsedTime()
+    for (let i = 0; i < this.balls.length; i++) {
+      this.balls[i].position.x -= 0.35
+      this.balls[i].position.y = Math.sin(2 * (curTime - i * 0.2)) * 5
+    }
   }
 }
 

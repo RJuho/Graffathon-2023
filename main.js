@@ -66,7 +66,7 @@ function init () {
     },
     {
       scene: new CubeRubber(),
-      time: 5000,
+      time: 6500,
     },
     {
       scene: new Explosion(),
