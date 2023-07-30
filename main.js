@@ -7,79 +7,92 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
-import { SnakeBirth } from './scenes/snakeBirth'
 import { Explosion } from './scenes/explosion'
 import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CityFromWindow } from './scenes/cityFromWindow'
-// import { StencilBLue } from './scenes/stencil-blue'
 import song from './assets/music/smoke-143172-cut.mp3'
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
-// import { Credits } from './scenes/credits'
+import { Credits } from './scenes/credits'
 import { Viuh } from './scenes/viuh'
-let scene, scenes, renderer, stats, composer
+
+let scene, scenes, renderer, stats, composer, current, timeout
+import { CubeRubber } from './scenes/CubeRubber'
 
 init()
+
+const loop = i => {
+  current = i
+  scene = scenes[i].scene
+
+  const controls = new OrbitControls(scene.getCamera, renderer.domElement)
+  controls.minDistance = 2
+  controls.maxDistance = 20
+  controls.enabled = false
+  controls.update()
+
+  composer = new EffectComposer(renderer)
+  composer.addPass(new RenderPass(scenes[i].scene.getScene, scenes[i].scene.getCamera))
+  scenes[i].scene.getEffectShaders.forEach(shaderPass => {
+    composer.addPass(shaderPass)
+  })
+
+  const outputPass = new OutputPass()
+  composer.addPass(outputPass)
+
+  if (scenes[i]?.time) {
+    timeout = Date.now() + scenes[i].time
+  } else {
+    timeout = false
+  }
+}
 
 function init () {
   scenes = [
     {
       scene: new Viuh(),
-      time: 50
+      time: 6000
     },
     {
       scene: new CityAtStreetLevel(),
-      time: 10
+      time: 10000
     },
     {
-      scene: new SnakeBirth()
-    }]
+
+      scene: new CityFromWindow(),
+      time: 8000
+    },
+    {
+      scene: new CubeRubber(),
+      time: 5000,
+    },
+    {
+      scene: new Explosion(),
+      time: 10000
+    }
+  ]
+
 
   // Stats
   stats = new Stats()
 
   const music = new window.Audio(song)
 
-  const loop = i => {
-    scene = scenes[i].scene
-
-    const controls = new OrbitControls(scene.getCamera, renderer.domElement)
-    controls.minDistance = 2
-    controls.maxDistance = 20
-    controls.enabled = false
-    controls.update()
-
-    composer = new EffectComposer(renderer)
-    composer.addPass(new RenderPass(scenes[i].scene.getScene, scenes[i].scene.getCamera))
-    scenes[i].scene.getEffectShaders.forEach(shaderPass => {
-      composer.addPass(shaderPass)
-    })
-
-    const outputPass = new OutputPass()
-    composer.addPass(outputPass)
-
-    if (!scenes[i]?.time) return
-
-    setTimeout(() => {
-      loop(i + 1)
-    }, scenes[i].time)
-  }
-
   const welcomeGUI = new GUI()
   welcomeGUI.hide()
 
   const settings = {
-    fullScreen: true,
-    music: true,
-    stats: true,
-    antialias: false,
-    checkShaderErrors: false,
-    pixelRatio: Number((window.devicePixelRatio * 0.70).toFixed(1)),
+    fullScreen: import.meta.env.MODE === 'production',
+    music: import.meta.env.MODE === 'production',
+    stats: import.meta.env.MODE === 'development',
+    antialias: import.meta.env.MODE === 'production',
+    checkShaderErrors: import.meta.env.MODE === 'development',
+    pixelRatio: import.meta.env.MODE === 'production' ? window.devicePixelRatio : Number((window.devicePixelRatio * 0.70).toFixed(1)),
     start: () => {
       welcomeGUI.hide()
-      document.body.style.cursor = 'none'
+      if (import.meta.env.MODE === 'production') document.body.style.cursor = 'none'
 
       // Renderer
       renderer = new THREE.WebGLRenderer({ antialias: settings.antialias })
@@ -144,7 +157,10 @@ function onWindowResize () {
   renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
-function animate () {
+const animate = () => {
+  if (timeout && Date.now() >= timeout) {
+    loop(current + 1)
+  }
   window.requestAnimationFrame(animate)
 
   scene.animate()

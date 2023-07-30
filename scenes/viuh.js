@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { createBall } from './generateCity'
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
@@ -23,6 +24,19 @@ class Viuh {
     this.cameraBoom.add(this.camera);
 
     this.scene.add(this.cameraBoom);
+    this.balls = []
+
+    for (let i = 0; i < 5; i++) {
+      const ball = createBall(2, [50+(i*3.5),50,5],null, this.scene, 0xccc)
+      this.scene.add(ball)
+      this.balls.push(ball)
+    }
+
+    for (let i = 0; i < 5; i++) {
+      const ball = createBall(2, [50+(i*3.5),50,15],null, this.scene, 0xccc)
+      this.scene.add(ball)
+      this.balls.push(ball)
+    }
 
     for (let i = 0; i < 5; i++) {
       const geometry = new THREE.IcosahedronGeometry(3);
@@ -90,9 +104,14 @@ class Viuh {
     for (const m of this.mixer) {
       m.update(delta);
     }
+    const curTime = Date.now() / 1000
 
+    for (let i = 0; i < this.balls.length; i++) {
+      this.balls[i].position.x -= 0.35
+      this.balls[i].position.y = Math.sin(2 * (curTime - i * 0.2)) * 5
+    }
 
-    this.cameraBoom.rotation.x += 0.05;
+    this.cameraBoom.rotation.x += 0.04;
   }
 }
 

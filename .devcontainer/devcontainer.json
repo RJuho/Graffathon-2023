@@ -9,6 +9,9 @@
 	"portsAttributes": {
 		"5173": {
 			"label": "Vite"
+		},
+		"3000": {
+			"label": "Combo server"
 		}
 	},
 	"customizations": {

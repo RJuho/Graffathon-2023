@@ -16,7 +16,8 @@
     "watch": "dev",
     "build": "vite build --base=/Graffathon-2023",
     "standard": "standard --fix | snazzy",
-    "lint": "npm run standard"
+    "lint": "npm run standard",
+    "bundle": "vite build && rm -rf ./return/dist ./return.zip && cp -r ./dist ./return/dist && zip -r return.zip return/*"
   },
   "author": "",
   "repository": "https://github.com/RJuho/Graffathon-2023"
