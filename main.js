@@ -71,6 +71,10 @@ function init () {
     {
       scene: new Explosion(),
       time: 10000
+    },
+    {
+      scene: new Credits(),
+      time: 10000,
     }
   ]
 
