@@ -18,7 +18,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { Credits } from './scenes/credits'
 import { Viuh } from './scenes/viuh'
 import { CubeRubber } from './scenes/CubeRubber'
-import { SnakeBirth } from './scenes/SnakeBirth'
+import { SnakeBirth } from './scenes/snakeBirth'
 
 let scene, scenes, renderer, stats, composer, current, timeout
 
