@@ -7,7 +7,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import Stats from 'three/addons/libs/stats.module.js'
 
-import { Stencil } from './scenes/stencil'
+import { SnakeBirth } from './scenes/snakeBirth'
 import { Explosion } from './scenes/explosion'
 import { CityAtStreetLevel } from './scenes/cityAtStreetLevel'
 import { CityFromWindow } from './scenes/cityFromWindow'
@@ -34,7 +34,7 @@ function init () {
       time: 10
     },
     {
-      scene: new Explosion()
+      scene: new SnakeBirth()
     }]
 
   // Stats
