@@ -14,6 +14,8 @@ class Explosion {
     return []
   }
 
+  randRange (min, max) { return Math.floor(Math.random() * (max - min + 1) + min) }
+
   constructor (gui = false) {
     // const cameraPos = [0, 5, 20]
     // const cameraPos = [-6, 0, 12.5]
@@ -22,6 +24,9 @@ class Explosion {
 
     this.scene = new THREE.Scene()
     this.clock = new THREE.Clock()
+
+    this.light = new THREE.AmbientLight(0xffffff) // soft white light
+    this.scene.add(this.light)
 
     // Init camera (PerspectiveCamera)
     this.camera = new THREE.PerspectiveCamera(
@@ -45,10 +50,10 @@ class Explosion {
     this.boxes = Array(params.particleCount)
     this.boxesDir = Array(params.particleCount)
     for (let ii = 0; ii < params.particleCount - 1; ii++) {
-      this.boxes[ii] = createBox(params.particleSize, [0, 0, 0], params, this.scene, 0xff00ff)
+      this.boxes[ii] = createBox(params.particleSize, [0, 0, 0], params, this.scene, this.randRange(0, 0xffffff + 1))
       this.boxesDir[ii] = [(Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.1]
     }
-    this.boxes[params.particleCount - 1] = createBox(params.particleSize, [0, 0, 0], params, this.scene, 0xff00ff)
+    this.boxes[params.particleCount - 1] = createBox(params.particleSize, [0, 0, 0], params, this.scene, 0x000000)
     this.boxesDir[params.particleCount - 1] = [0, 0.1, 0]
     createBox.bind(this)
 
@@ -120,7 +125,7 @@ class Explosion {
       }
     }
 
-    const nn = 1  
+    const nn = 1
     if (this.boxes[params.particleCount - 1].position.y > this.camera.position.y - nn) {
       params.blackScreen = true
       this.boxesDir[params.particleCount - 1][1] = 0
