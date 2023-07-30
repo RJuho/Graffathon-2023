@@ -17,9 +17,36 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { Credits } from './scenes/credits'
 import { Viuh } from './scenes/viuh'
-let scene, scenes, renderer, stats, composer
+
+let scene, scenes, renderer, stats, composer, current, timeout
 
 init()
+
+const loop = i => {
+  current = i
+  scene = scenes[i].scene
+
+  const controls = new OrbitControls(scene.getCamera, renderer.domElement)
+  controls.minDistance = 2
+  controls.maxDistance = 20
+  controls.enabled = false
+  controls.update()
+
+  composer = new EffectComposer(renderer)
+  composer.addPass(new RenderPass(scenes[i].scene.getScene, scenes[i].scene.getCamera))
+  scenes[i].scene.getEffectShaders.forEach(shaderPass => {
+    composer.addPass(shaderPass)
+  })
+
+  const outputPass = new OutputPass()
+  composer.addPass(outputPass)
+
+  if (scenes[i]?.time) {
+    timeout = Date.now() + scenes[i].time
+  } else {
+    timeout = false
+  }
+}
 
 function init () {
   scenes = [
@@ -29,12 +56,12 @@ function init () {
     },
     {
       scene: new CityAtStreetLevel(),
-      time: 10
+      time: 10000
     },
     {
 
       scene: new CityFromWindow(),
-      time: 10000
+      time: 8000
     },
     {
       scene: new Explosion(),
@@ -51,31 +78,6 @@ function init () {
   stats = new Stats()
 
   const music = new window.Audio(song)
-
-  const loop = i => {
-    scene = scenes[i].scene
-
-    const controls = new OrbitControls(scene.getCamera, renderer.domElement)
-    controls.minDistance = 2
-    controls.maxDistance = 20
-    controls.enabled = false
-    controls.update()
-
-    composer = new EffectComposer(renderer)
-    composer.addPass(new RenderPass(scenes[i].scene.getScene, scenes[i].scene.getCamera))
-    scenes[i].scene.getEffectShaders.forEach(shaderPass => {
-      composer.addPass(shaderPass)
-    })
-
-    const outputPass = new OutputPass()
-    composer.addPass(outputPass)
-
-    if (!scenes[i]?.time) return
-
-    setTimeout(() => {
-      loop(i + 1)
-    }, scenes[i].time)
-  }
 
   const welcomeGUI = new GUI()
   welcomeGUI.hide()
@@ -154,7 +156,10 @@ function onWindowResize () {
   renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
-function animate () {
+const animate = () => {
+  if (timeout && Date.now() >= timeout) {
+    loop(current + 1)
+  }
   window.requestAnimationFrame(animate)
 
   scene.animate()
